@@ -9,23 +9,27 @@ namespace FinalProject.Models
     [Table("Course")]
     public partial class Course
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Course()
-        {
-            CourseEnrolments = new HashSet<CourseEnrolment>();
-        }
-
+        [Key]
         public string CourseId { get; set; }
 
         [Required]
+        [Display(Name = "Course Name")]
         [StringLength(100)]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Available Semesters")]
         [StringLength(3)]
         public string Available { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseEnrolment> CourseEnrolments { get; set; }
+        [Display(Name = "Create Date")]
+        public DateTime CreateDate { get; set; }
+
+        [Display(Name = "Edit Date")]
+        public DateTime EditDate { get; set; }
+
+        [Display(Name = "Course Enrolment")]
+        [InverseProperty("Student")]
+        public virtual ICollection<CourseEnrolment> CourseEnrolments { get; set; } = new HashSet<CourseEnrolment>();
     }
 }

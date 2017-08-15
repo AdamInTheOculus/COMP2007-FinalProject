@@ -9,18 +9,31 @@ namespace FinalProject.Models
     [Table("CourseEnrolment")]
     public partial class CourseEnrolment
     {
+        [Key]
+        [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
         public string CourseEnrolmentId { get; set; }
 
         [Required]
         [StringLength(128)]
+        [Display(Name = "Student")]
         public string StudentId { get; set; }
 
         [Required]
         [StringLength(128)]
+        [Display(Name = "Course")]
         public string CourseId { get; set; }
 
+        [ForeignKey("CourseId")]
         public virtual Course Course { get; set; }
 
+        [ForeignKey("StudentId")]
         public virtual Student Student { get; set; }
+
+        [Display(Name = "Create Date")]
+        [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+        public DateTime CreateDate { get; set; }
+
+        [Display(Name = "Edit Date")]
+        public DateTime EditDate { get; set; } = DateTime.UtcNow;
     }
 }

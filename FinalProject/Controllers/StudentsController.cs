@@ -46,16 +46,24 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StudentId,Name,Average")] Student student)
+        public ActionResult Create([Bind(Include = "Name")] Student model)
         {
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
-                db.SaveChanges();
+                Student checkModel = db.Students.SingleOrDefault(x => x.Name == model.Name);
+
+                if(checkModel == null)
+                {
+                    model.StudentId = Guid.NewGuid().ToString();
+                    model.CreateDate = DateTime.Now;
+                    model.EditDate = model.CreateDate;
+                    db.Students.Add(model);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(model);
         }
 
         // GET: Students/Edit/5
@@ -78,15 +86,37 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentId,Name,Average")] Student student)
+        public ActionResult Edit([Bind(Include = "StudentId,Name,Average")] Student model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Student tempModel = db.Students.Find(model.StudentId);
+                if(tempModel != null)
+                {
+                    Student checkModel = db.Students.SingleOrDefault(x => x.Name == model.Name && x.Average == model.Average);
+
+                    if(checkModel == null)
+                    {
+                        tempModel.Name = model.Name;
+                        tempModel.Average = model.Average;
+                        tempModel.EditDate = DateTime.Now;
+
+                        db.Entry(tempModel).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicated Student detected.");
+                    }
+                }
+                else
+                {
+                    return Content("tempModel not found! " + model.Name);
+                }
             }
-            return View(student);
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            return View(model);
         }
 
         // GET: Students/Delete/5

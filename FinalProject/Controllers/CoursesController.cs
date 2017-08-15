@@ -46,16 +46,25 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CourseId,Name,Available")] Course course)
+        public ActionResult Create([Bind(Include = "Name,Available")] Course model)
         {
             if (ModelState.IsValid)
             {
-                db.Courses.Add(course);
-                db.SaveChanges();
+                Course checkModel = db.Courses.SingleOrDefault(x => x.Name == model.Name);
+                if(checkModel == null)
+                {
+                    model.CourseId = Guid.NewGuid().ToString();
+                    model.CreateDate = DateTime.Now;
+                    model.EditDate = model.CreateDate;
+
+                    db.Courses.Add(model);
+                    db.SaveChanges();
+                }
+                
                 return RedirectToAction("Index");
             }
 
-            return View(course);
+            return View(model);
         }
 
         // GET: Courses/Edit/5
@@ -78,15 +87,36 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CourseId,Name,Available")] Course course)
+        public ActionResult Edit([Bind(Include = "CourseId,Name,Available")] Course model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(course).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Course tempModel = db.Courses.Find(model.CourseId);
+                if (tempModel != null)
+                {
+                    Student checkModel = db.Students.SingleOrDefault(x => x.Name == model.Name);
+
+                    if (checkModel == null)
+                    {
+                        tempModel.Name = model.Name;
+                        tempModel.Available = model.Available;
+                        tempModel.EditDate = DateTime.Now;
+
+                        db.Entry(tempModel).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicated Course detected.");
+                    }
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
             }
-            return View(course);
+            return View(model);
         }
 
         // GET: Courses/Delete/5

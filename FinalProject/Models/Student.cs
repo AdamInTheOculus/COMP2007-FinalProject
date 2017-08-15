@@ -9,21 +9,31 @@ namespace FinalProject.Models
     [Table("Student")]
     public partial class Student
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Student()
-        {
-            CourseEnrolments = new HashSet<CourseEnrolment>();
-        }
 
+        [Key]
         public string StudentId { get; set; }
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Student Name")]
         public string Name { get; set; }
 
         public double? Average { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseEnrolment> CourseEnrolments { get; set; }
+        [Display(Name = "Create Date")]
+        public DateTime CreateDate { get; set; }
+
+        [Display(Name = "Edit Date")]
+        public DateTime EditDate { get; set; }
+
+
+        [Display(Name = "Course Enrolment")]
+        [InverseProperty("Course")]
+        public virtual ICollection<CourseEnrolment> CourseEnrolments { get; set; } = new HashSet<CourseEnrolment>();
+
+        public override string ToString()
+        {
+            return String.Format("{0}", Name);
+        }
     }
 }
