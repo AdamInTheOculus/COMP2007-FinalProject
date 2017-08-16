@@ -10,6 +10,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class CourseEnrolmentsController : Controller
     {
         private ContextModel db = new ContextModel();

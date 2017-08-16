@@ -10,11 +10,13 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private ContextModel db = new ContextModel();
 
         // GET: Courses
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(db.Courses.ToList());
