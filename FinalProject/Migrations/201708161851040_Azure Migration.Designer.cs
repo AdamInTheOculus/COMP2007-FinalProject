@@ -7,13 +7,13 @@ namespace FinalProject.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Initialize : IMigrationMetadata
+    public sealed partial class AzureMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialize));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AzureMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708142215370_Initialize"; }
+            get { return "201708161851040_Azure Migration"; }
         }
         
         string IMigrationMetadata.Source

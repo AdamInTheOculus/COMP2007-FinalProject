@@ -3,7 +3,7 @@ namespace FinalProject.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initialize : DbMigration
+    public partial class AzureMigration : DbMigration
     {
         public override void Up()
         {
@@ -11,10 +11,10 @@ namespace FinalProject.Migrations
                 "dbo.CourseEnrolment",
                 c => new
                     {
-                        CourseEnrolmentId = c.String(nullable: false, maxLength: 128, defaultValueSql: "newid()"),
+                        CourseEnrolmentId = c.String(nullable: false, maxLength: 128),
                         StudentId = c.String(nullable: false, maxLength: 128),
                         CourseId = c.String(nullable: false, maxLength: 128),
-                        CreateDate = c.DateTime(nullable: false, defaultValueSql: "getutcdate()"),
+                        CreateDate = c.DateTime(nullable: false),
                         EditDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.CourseEnrolmentId)
@@ -27,10 +27,10 @@ namespace FinalProject.Migrations
                 "dbo.Course",
                 c => new
                     {
-                        CourseId = c.String(nullable: false, maxLength: 128, defaultValueSql: "newid()"),
+                        CourseId = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 100),
                         Available = c.String(nullable: false, maxLength: 3),
-                        CreateDate = c.DateTime(nullable: false, defaultValueSql: "getutcdate()"),
+                        CreateDate = c.DateTime(nullable: false),
                         EditDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.CourseId);
@@ -39,10 +39,10 @@ namespace FinalProject.Migrations
                 "dbo.Student",
                 c => new
                     {
-                        StudentId = c.String(nullable: false, maxLength: 128, defaultValueSql: "newid()"),
+                        StudentId = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 100),
                         Average = c.Double(),
-                        CreateDate = c.DateTime(nullable: false, defaultValueSql: "getutcdate()"),
+                        CreateDate = c.DateTime(nullable: false),
                         EditDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.StudentId);

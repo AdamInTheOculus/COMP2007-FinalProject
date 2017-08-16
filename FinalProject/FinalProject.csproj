@@ -178,9 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708142215370_Initialize.cs" />
-    <Compile Include="Migrations\201708142215370_Initialize.Designer.cs">
-      <DependentUpon>201708142215370_Initialize.cs</DependentUpon>
+    <Compile Include="Migrations\201708161851040_Azure Migration.cs" />
+    <Compile Include="Migrations\201708161851040_Azure Migration.Designer.cs">
+      <DependentUpon>201708161851040_Azure Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -202,6 +202,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\CourseStudentEnrolment - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\CourseStudentEnrolment - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -276,8 +278,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708142215370_Initialize.resx">
-      <DependentUpon>201708142215370_Initialize.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708161851040_Azure Migration.resx">
+      <DependentUpon>201708161851040_Azure Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
