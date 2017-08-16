@@ -112,7 +112,7 @@ namespace FinalProject.Controllers
                 }
                 else
                 {
-                    return Content("tempModel not found! " + model.Name);
+                    return HttpNotFound();
                 }
             }
             //var errors = ModelState.Values.SelectMany(v => v.Errors);

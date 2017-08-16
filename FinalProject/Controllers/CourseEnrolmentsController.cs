@@ -33,6 +33,7 @@ namespace FinalProject.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(courseEnrolment);
         }
 
@@ -49,18 +50,28 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CourseEnrolmentId,StudentId,CourseId")] CourseEnrolment courseEnrolment)
+        public ActionResult Create([Bind(Include = "CourseId, StudentId")] CourseEnrolment model)
         {
             if (ModelState.IsValid)
             {
-                db.CourseEnrolments.Add(courseEnrolment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                CourseEnrolment tempModel = db.CourseEnrolments.SingleOrDefault(x => x.CourseId == model.CourseId && x.StudentId == model.StudentId);
+                if(tempModel == null)
+                {
+                    model.CourseEnrolmentId = Guid.NewGuid().ToString();
+                    model.CreateDate = DateTime.Now;
+                    model.EditDate = model.CreateDate;
+                    db.CourseEnrolments.Add(model);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate CourseEnrolment Found");
+                }
             }
-
-            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", courseEnrolment.CourseId);
-            ViewBag.StudentId = new SelectList(db.Students, "StudentId", "Name", courseEnrolment.StudentId);
-            return View(courseEnrolment);
+            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", model.CourseId);
+            ViewBag.StudentId = new SelectList(db.Students, "StudentId", "Name", model.StudentId);
+            return View(model);
         }
 
         // GET: CourseEnrolments/Edit/5
@@ -85,17 +96,39 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CourseEnrolmentId,StudentId,CourseId")] CourseEnrolment courseEnrolment)
+        public ActionResult Edit([Bind(Include = "CourseEnrolmentId,StudentId,CourseId")] CourseEnrolment model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(courseEnrolment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                CourseEnrolment tempModel = db.CourseEnrolments.Find(model.CourseEnrolmentId);
+                if(tempModel != null)
+                {
+                    CourseEnrolment checkModel = db.CourseEnrolments.SingleOrDefault(x => x.CourseEnrolmentId == model.CourseEnrolmentId &&
+                                                                                          x.StudentId == model.StudentId && 
+                                                                                          x.CourseId == model.CourseId);
+                    if(checkModel == null)
+                    {
+                        tempModel.CourseId = model.CourseId;
+                        tempModel.StudentId = model.StudentId;
+                        tempModel.EditDate = DateTime.Now;
+
+                        db.Entry(tempModel).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicated CourseEnrolment detected.");
+                    }
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", courseEnrolment.CourseId);
-            ViewBag.StudentId = new SelectList(db.Students, "StudentId", "Name", courseEnrolment.StudentId);
-            return View(courseEnrolment);
+            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", model.CourseId);
+            ViewBag.StudentId = new SelectList(db.Students, "StudentId", "Name", model.StudentId);
+            return View(model);
         }
 
         // GET: CourseEnrolments/Delete/5

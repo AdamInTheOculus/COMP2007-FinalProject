@@ -10,7 +10,6 @@ namespace FinalProject.Models
     public partial class CourseEnrolment
     {
         [Key]
-        [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
         public string CourseEnrolmentId { get; set; }
 
         [Required]
@@ -30,10 +29,9 @@ namespace FinalProject.Models
         public virtual Student Student { get; set; }
 
         [Display(Name = "Create Date")]
-        [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate { get; set; }
 
         [Display(Name = "Edit Date")]
-        public DateTime EditDate { get; set; } = DateTime.UtcNow;
+        public DateTime EditDate { get; set; }
     }
 }
